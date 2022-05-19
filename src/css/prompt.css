@@ -14,3 +14,17 @@
     background-color: #004b7f;
     color: #fff;
 }
+
+.prompt-form {
+    display: flex;
+    flex: 0 0 100%;
+}
+
+.prompt-input {
+    width: -webkit-fill-available;
+    margin-right: 5px;
+}
+
+.prompt-button {
+
+}
