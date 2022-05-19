@@ -1,0 +1,6 @@
+@import url("editor.css");
+@import url("prompt.css");
+
+body {
+    font-family: Consolas, "Courier New", monospace;
+}

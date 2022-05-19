@@ -1,5 +1,7 @@
 import * as monaco from "monaco-editor";
-import "./index.css";
+import { Prompt } from "./prompt";
+
+import "./css/index.css";
 
 // @ts-ignore
 self.MonacoEnvironment = {
@@ -20,7 +22,7 @@ self.MonacoEnvironment = {
     },
 };
 
-monaco.editor.create(document.getElementById("monaco-editor"), {
+const editor = monaco.editor.create(document.getElementById("monaco-editor"), {
     value: "",
     language: "python",
     minimap: {
@@ -43,4 +45,14 @@ monaco.editor.create(document.getElementById("monaco-editor"), {
     },
     fontSize: 20,
     lineHeight: 30,
+});
+
+const prompt = new Prompt(editor);
+
+editor.addCommand(monaco.KeyMod.WinCtrl | monaco.KeyCode.Space, () => {
+    prompt.open();
+});
+
+editor.addCommand(monaco.KeyCode.Escape, () => {
+    prompt.close();
 });
