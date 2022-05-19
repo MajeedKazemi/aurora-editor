@@ -47,12 +47,14 @@ export class Prompt {
 
         outputContainer.appendChild(outputCode);
 
-        this.container.appendChild(outputContainer);
-
         button.onclick = () => {
             generateCode(this.getCodeBeforeCursor(), input.value).then(
                 (result: string) => {
                     outputCode.innerText = result;
+
+                    monaco.editor.colorizeElement(outputCode, {
+                        mimeType: "python",
+                    });
                 }
             );
         };
@@ -61,6 +63,7 @@ export class Prompt {
         form.appendChild(button);
 
         this.container.appendChild(form);
+        this.container.appendChild(outputContainer);
         document.body.appendChild(this.container);
 
         document.addEventListener("click", (e) => {
