@@ -1,4 +1,5 @@
 import * as monaco from "monaco-editor";
+import { generateCode } from "./codex";
 
 export class Prompt {
     editor: monaco.editor.IStandaloneCodeEditor;
@@ -9,11 +10,22 @@ export class Prompt {
         this.editor = editor;
     }
 
+    private getCodeBeforeCursor(): string {
+        this.editor.getPosition();
+
+        const code = this.editor.getValue();
+
+        return code
+            .split("\n")
+            .slice(0, this.editor.getPosition().lineNumber - 1)
+            .join("\n");
+    }
+
     private create() {
         this.container = document.createElement("div");
         this.container.classList.add("prompt-container");
 
-        const form = document.createElement("form");
+        const form = document.createElement("div");
         form.classList.add("prompt-form");
 
         const input = document.createElement("input");
@@ -26,6 +38,24 @@ export class Prompt {
         const button = document.createElement("button");
         button.classList.add("prompt-button");
         button.innerText = "Generate";
+
+        const outputContainer = document.createElement("div");
+        outputContainer.classList.add("prompt-output");
+
+        const outputCode = document.createElement("p");
+        outputCode.classList.add("prompt-output-code");
+
+        outputContainer.appendChild(outputCode);
+
+        this.container.appendChild(outputContainer);
+
+        button.onclick = () => {
+            generateCode(this.getCodeBeforeCursor(), input.value).then(
+                (result: string) => {
+                    outputCode.innerText = result;
+                }
+            );
+        };
 
         form.appendChild(input);
         form.appendChild(button);
@@ -43,6 +73,8 @@ export class Prompt {
                 this.close();
             }
         });
+
+        input.focus();
     }
 
     open() {
